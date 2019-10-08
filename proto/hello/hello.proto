@@ -21,6 +21,10 @@ syntax = "proto3";
 package bazel.example.hello;
 
 option go_package = "bazel/example/proto/hello";
+option java_package = "bazel.example.proto.hello";
+option java_multiple_files = true;
+
+import "google/api/annotations.proto";
 
 message HelloRequest {
   string message = 1;
@@ -31,7 +35,9 @@ message HelloResponse {
 }
 
 service Hello{
-  rpc UnaryHello(HelloRequest) returns (HelloResponse) {}
+  rpc UnaryHello(HelloRequest) returns (HelloResponse) {
+    option (google.api.http) = { get: "/hello" };
+  }
   rpc ServerStreamingHello(HelloRequest) returns (stream HelloResponse) {}
   rpc ClientStreamingHello(stream HelloRequest) returns (HelloResponse) {}
   rpc BidirectionalStreamingHello(stream HelloRequest) returns (stream HelloResponse) {}
